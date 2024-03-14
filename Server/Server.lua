@@ -67,3 +67,15 @@ if(GetCurrentResourceName() == "NvX_Admin") then
 else
     print("^7[^3NvX_Admin^7] - For Starting This Script, Rename It In Originale Name; NvX_Admin")
 end
+
+-- {NoClip Command} -- 
+RegisterCommand('NvX_Admin_NoClip', function(source, args)
+    local xPlayer = FW.GetPlayerFromId(source)
+    local GroupPlayer = xPlayer.getGroup()
+
+    if GroupPlayer ~= nil and GroupPlayer[Config.ListPermission] then 
+        TriggerClientEvent("NvX_Admin:NoClip", source)
+    else 
+        TriggerClientEvent('esx:showNotification', source, Lang["NotHavePermission"])
+    end
+end)
