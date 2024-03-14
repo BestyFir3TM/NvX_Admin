@@ -40,7 +40,7 @@ function NvX_CheckJson()
         print()
         print("^7[^3NvX_Admin^7] - File NvX_Bans.json Regenerated Correctly")
     else
-        local TAble = json.decode(File)
+        local Table = json.decode(File)
 
         if not Table then 
             SaveResourceFile(GetCurrentResourceName(), "NvX_Bans.json", "[]", -1)
