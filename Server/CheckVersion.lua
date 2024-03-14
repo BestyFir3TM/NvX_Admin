@@ -4,10 +4,10 @@ if Config.CheckVersion then
         updatePath = "/BestyFir3TM/NvX_Admin" -- Git Repository 
         resourceName = "NvX_Admin ("..GetCurrentResourceName()..")" 
 
-        function checkVersion(err, rText, headers) 
+        function checkVersion(err, responseText, headers) 
             curVersion = LoadResourceFile(GetCurrentResourceName(), "version") -- File On Root Git 
 
-            if curVersion ~= rText and tonumber(curVersion) < tonumber(rText) then 
+            if curVersion ~= responseText and tonumber(curVersion) < tonumber(responseText) then 
                 print('^7[^3NvX_Admin^7] - There Is New Update For This Admin Menu, Download It :)')
                 print('^7[^3NvX_Admin^7] - Here Is The Link To Download New Version: https://github.com'..updatePath..'')
 
