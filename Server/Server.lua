@@ -28,20 +28,6 @@ FW.RegisterServerCallback('NvX_Admin:CheckGroupPlayer', function(source, cb)
 end)
 
 -- {Check Resource Name With Check Json File, If Missing Is Creating That} -- 
-if(GetCurrentResourceName() == "NvX_Admin") then 
-    NvX_CheckJson()
-
-    if Config.PrintsConsole then 
-        print('^8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
-        print("^7[^3NvX_Admin^7] - For Correctly Work")
-        print("^7[^3NvX_Admin^7] - Check If esx_menu_default & esx_menu_dialog Is Started")
-        print("^7[^3NvX_Admin^7] - Enjoy With Admin Menu")
-        print('^8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
-    end
-else
-    print("^7[^3NvX_Admin^7] - For Starting This Script, Rename It In Originale Name; NvX_Admin")
-end
-
 function NvX_CheckJson()
     local File = LoadResourceFile(GetCurrentResourceName(), "NvX_Bans.json") 
 
@@ -68,4 +54,18 @@ function NvX_CheckJson()
             os.exit()
         end
     end
+end
+
+if(GetCurrentResourceName() == "NvX_Admin") then 
+    NvX_CheckJson()
+
+    if Config.PrintsConsole then 
+        print('^8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
+        print("^7[^3NvX_Admin^7] - For Correctly Work")
+        print("^7[^3NvX_Admin^7] - Check If esx_menu_default & esx_menu_dialog Is Started")
+        print("^7[^3NvX_Admin^7] - Enjoy With Admin Menu")
+        print('^8~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
+    end
+else
+    print("^7[^3NvX_Admin^7] - For Starting This Script, Rename It In Originale Name; NvX_Admin")
 end
