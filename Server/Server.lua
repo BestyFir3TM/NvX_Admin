@@ -5,9 +5,7 @@ elseif Config.FrameWork == "OldESX" then
     FW = nil 
     TriggerEvent('esx:getSharedObject', function(obj) FW = obj end)
 else
-    if Config.PrintsConsole then 
-        print("^7[^3NvX_Admin^7 - ^1Server Side^7] Only Framework Avaible Is ESX (Legacy Or Not) Any Different Framework Is Not Supported")
-    end
+    print("^7[^3NvX_Admin^7 - ^1Server Side^7] Only Framework Avaible Is ESX (Legacy Or Not) Any Different Framework Is Not Supported")
 end
 
 -- {Permission List For Staffer} --
