@@ -7,7 +7,7 @@ Description 'Admin Menu For Server FiveM [AIO]'
 Version '1.0.0'
 
 server_scripts {
-    'Config/Config.logs.lua',
+    'Config/Config.Logs.lua',
     'Config/Config.lua',
     'Server/*.lua'
 }
