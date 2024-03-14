@@ -6,7 +6,9 @@ elseif Config.FrameWork == "OldESX" then
     TriggerEvent('esx:getSharedObject', function(obj) FW = obj end)
 else
     if Config.PrintsConsole then 
+        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
         print("^7[^3NvX_Admin^7 - ^4Client Side^7] Only Framework Avaible Is ESX (Legacy Or Not) Any Different Framework Is Not Supported")
+        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
     end
 end
 
@@ -23,7 +25,7 @@ RegisterCommand('NvX_Admin_OpenStaffMenu', function()
         elseif group ~= nil and(group == 'helper') then 
             NvX_HelperMenu()
         else
-            FW.ShowNotification(Lang["NotHavePermission"])
+            FW.ShowNotification(Config.LanguageSyS["NotHavePermission"])
         end
     end)
 end)
@@ -35,7 +37,7 @@ RegisterCommand('NvX_Admin_NoClip', function()
         if group ~= nil and group[Config.ListPermission] then 
             ExecuteCommand('NvX_Admin_NoClip')
         else
-            FW.ShowNotification(Lang["NotHavePermission"])
+            FW.ShowNotification(Config.LanguageSyS["NotHavePermission"])
         end
     end)
 end)
@@ -105,7 +107,7 @@ RegisterCommand('NvX_Admin_NameTags', function()
         if group ~= nil and group[Config.ListPermission] then 
             NvX_NameTags()
         else
-            FW.ShowNotification(Lang["NotHavePermission"])
+            FW.ShowNotification(Config.LanguageSyS["NotHavePermission"])
         end
     end)
 end)
@@ -116,10 +118,10 @@ function NvX_NameTags()
 
     if SeeNames then 
         SeeNames = true 
-        FW.ShowNotification(Lang["SeeNameTags_Active"])
+        FW.ShowNotification(Config.LanguageSyS["SeeNameTags_Active"])
     else
         SeeNames = false 
-        FW.ShowNotification(Lang["SeeNameTags_Deactive"])
+        FW.ShowNotification(Config.LanguageSyS["SeeNameTags_Deactive"])
     end
 
     Citizen.CreateThread(function()
