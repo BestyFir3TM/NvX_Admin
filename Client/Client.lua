@@ -177,16 +177,78 @@ end
 
 -- {Owner Menu} --
 function NvX_OwnerMenu()
+    ESX.UI.Menu.CloseAll()
+
+    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'NvX_Admin_MenuOwner', {
+        title = 'NvX_Admin - '..Config.LanguageSyS.Owner_TitleMenu,
+        align = Config.MenuAlign,
+        elements = {
+            {
+                label = '> <span style = color:'..Config.LanguageSyS.Owner_Elements.AdministrationColor..'; span>'  
+                ..Config.LanguageSyS.Owner_Elements.AdministrationEmoji..' '
+                ..Config.LanguageSyS.Owner_Elements.Administration..' '
+                ..Config.LanguageSyS.Owner_Elements.AdministrationEmoji..'</span> <',
+
+                value = ''
+            },
+
+            {
+                label = '> <span style = color:'..Config.LanguageSyS.Owner_Elements.PersonalColor..'; span>'  
+                ..Config.LanguageSyS.Owner_Elements.PersonalEmoji..' '
+                ..Config.LanguageSyS.Owner_Elements.Personal..' '
+                ..Config.LanguageSyS.Owner_Elements.PersonalEmoji..'</span> <',
+
+                value = ''
+            },
+
+            {
+                label = '> <span style = color:'..Config.LanguageSyS.Owner_Elements.VehicleColor..'; span>'  
+                ..Config.LanguageSyS.Owner_Elements.VehicleEmoji..' '
+                ..Config.LanguageSyS.Owner_Elements.Vehicle..' '
+                ..Config.LanguageSyS.Owner_Elements.VehicleEmoji..'</span> <',
+
+                value = ''
+            },
+
+            {
+                label = '> <span style = color:'..Config.LanguageSyS.Owner_Elements.VarsColor..'; span>'  
+                ..Config.LanguageSyS.Owner_Elements.VarsEmoji..' '
+                ..Config.LanguageSyS.Owner_Elements.Vars..' '
+                ..Config.LanguageSyS.Owner_Elements.VarsEmoji..'</span> <',
+
+                value = ''
+            },
+        }
+
+    }, function(d, m)
+
+        local NvX = d.current.value 
+
+        if NvX == '' then 
+
+        elseif NvX == '' then 
+
+        end
+    
+    end, function(d, m)
+        m.close()
+    end)
 end
 
 -- {Admin Menu} --
 function NvX_AdminMenu()
+    ESX.UI.Menu.CloseAll()
+
 end
 
 -- {Mod Menu} --
 function NvX_ModMenu()
+    ESX.UI.Menu.CloseAll()
+
 end
 
 -- {Helper Menu} --
 function NvX_HelperMenu()
+    ESX.UI.Menu.CloseAll()
+
 end
