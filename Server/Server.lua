@@ -1,9 +1,9 @@
 -- {Default Var For ESX} --
 if Config.FrameWork == "NewESX" then 
-    FW = exports['es_extended']:getSharedObject()
+    ESX = exports['es_extended']:getSharedObject()
 elseif Config.FrameWork == "OldESX" then 
-    FW = nil 
-    TriggerEvent('esx:getSharedObject', function(obj) FW = obj end)
+    ESX = nil 
+    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 else
     print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
     print("^7[^3NvX_Admin^7 - ^1Server Side^7] Only Framework Avaible Is ESX (Legacy Or Not) Any Different Framework Is Not Supported")
@@ -11,8 +11,8 @@ else
 end
 
 -- {Permission List For Staffer} --
-FW.RegisterServerCallback('NvX_Admin:CheckGroupPlayer', function(source, cb)
-    local xPlayer = FW.GetPlayerFromId(source)
+ESX.RegisterServerCallback('NvX_Admin:CheckGroupPlayer', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
 
     if xPlayer ~= nil then 
         local Group = xPlayer.getGroup()
@@ -81,11 +81,11 @@ else
 end
 
 -- {NoClip Command} -- 
-RegisterCommand('NvX_Admin_NoClip', function(source, args)
-    local xPlayer = FW.GetPlayerFromId(source)
+RegisterCommand('NvX_Admin_NoClipV2', function(source, args)
+    local xPlayer = ESX.GetPlayerFromId(source)
     local GroupPlayer = xPlayer.getGroup()
 
-    if GroupPlayer ~= nil and GroupPlayer[Config.ListPermission] then 
+    if GroupPlayer ~= nil and (GroupPlayer == 'owner' or GroupPlayer == 'admin' or GroupPlayer == 'mod' or GroupPlayer == 'helper') then 
         TriggerClientEvent("NvX_Admin:NoClip", source)
     else 
         TriggerClientEvent('esx:showNotification', source, Config.LanguageSyS["NotHavePermission"])

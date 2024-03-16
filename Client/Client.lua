@@ -1,9 +1,9 @@
 -- {Default Var For ESX} --
 if Config.FrameWork == "NewESX" then 
-    FW = exports['es_extended']:getSharedObject()
+    ESX = exports['es_extended']:getSharedObject()
 elseif Config.FrameWork == "OldESX" then 
-    FW = nil 
-    TriggerEvent('esx:getSharedObject', function(obj) FW = obj end)
+    ESX = nil 
+    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 else
     if Config.PrintsConsole then 
         print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
@@ -15,7 +15,7 @@ end
 -- {Open Menù Staff With KeyBind} -- 
 RegisterKeyMapping('NvX_Admin_OpenStaffMenu', 'Open Menù STAFF', 'KEYBOARD', Config.OpenKey)
 RegisterCommand('NvX_Admin_OpenStaffMenu', function()
-    FW.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
+    ESX.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
         if group ~= nil and(group == 'owner') then 
             NvX_OwnerMenu()
         elseif group ~= nil and(group == 'admin') then 
@@ -25,7 +25,7 @@ RegisterCommand('NvX_Admin_OpenStaffMenu', function()
         elseif group ~= nil and(group == 'helper') then 
             NvX_HelperMenu()
         else
-            FW.ShowNotification(Config.LanguageSyS["NotHavePermission"])
+            ESX.ShowNotification(Config.LanguageSyS.NotHavePermission)
         end
     end)
 end)
@@ -33,11 +33,11 @@ end)
 -- {No Clip Keybind} -- 
 RegisterKeyMapping('NvX_Admin_NoClip', 'NoClip Staff', 'KEYBOARD', Config.NoClipKey)
 RegisterCommand('NvX_Admin_NoClip', function()
-    FW.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
-        if group ~= nil and group[Config.ListPermission] then 
-            ExecuteCommand('NvX_Admin_NoClip')
+    ESX.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
+        if group ~= nil and (group == 'owner' or group == 'admin' or group == 'mod' or group == 'helper') then 
+            ExecuteCommand('NvX_Admin_NoClipV2')
         else
-            FW.ShowNotification(Config.LanguageSyS["NotHavePermission"])
+            ESX.ShowNotification(Config.LanguageSyS.NotHavePermission)
         end
     end)
 end)
@@ -45,15 +45,27 @@ end)
 local NoClip = false 
 RegisterNetEvent('NvX_Admin:NoClip')
 AddEventHandler('NvX_Admin:NoClip', function()
-    NoClip = not NoClip 
-    FreezeEntityPosition(PlayerPedId(), NoClip)
-    SetEntityVisible(PlayerPedId(), not NoClip)
-    SetPlayerCanUseCover(PlayerId(), not NoClip)
+    ESX.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
+        if group ~= nil and (group == 'owner' or group == 'admin' or group == 'mod' or group == 'helper') then 
+            NoClip = not NoClip 
+            FreezeEntityPosition(PlayerPedId(), NoClip)
+            SetEntityVisible(PlayerPedId(), not NoClip)
+            SetPlayerCanUseCover(PlayerId(), not NoClip)
+
+            if NoClip then 
+                ESX.ShowNotification(Config.LanguageSyS.NoClipActivated)
+            else
+                ESX.ShowNotification(Config.LanguageSyS.NoClipDeactivated) 
+            end
+        else
+            ESX.ShowNotification(Config.LanguageSyS.NotHavePermission)
+        end
+    end)
 end)
 
 Citizen.CreateThread(function()
     while true do 
-        if NoClip then 
+        if NoClip then  
             local yOff = 0.0 
             local zOff = 0.0 
 
@@ -103,11 +115,11 @@ end)
 -- {NameTags Keybind} --
 RegisterKeyMapping('NvX_Admin_NameTags', 'NameTags Staff', 'KEYBOARD', Config.NameKey)
 RegisterCommand('NvX_Admin_NameTags', function()
-    FW.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
-        if group ~= nil and group[Config.ListPermission] then 
+    ESX.TriggerServerCallback('NvX_Admin:CheckGroupPlayer', function(group)
+        if group ~= nil and (group == 'owner' or group == 'admin' or group == 'mod' or group == 'helper') then 
             NvX_NameTags()
-        else
-            FW.ShowNotification(Config.LanguageSyS["NotHavePermission"])
+        else    
+            ESX.ShowNotification(Config.LanguageSyS.NotHavePermission)     
         end
     end)
 end)
@@ -118,10 +130,10 @@ function NvX_NameTags()
 
     if SeeNames then 
         SeeNames = true 
-        FW.ShowNotification(Config.LanguageSyS["SeeNameTags_Active"])
+        ESX.ShowNotification(Config.LanguageSyS.NameTagsActive)
     else
         SeeNames = false 
-        FW.ShowNotification(Config.LanguageSyS["SeeNameTags_Deactive"])
+        ESX.ShowNotification(Config.LanguageSyS.NameTagsDeactive)
     end
 
     Citizen.CreateThread(function()
