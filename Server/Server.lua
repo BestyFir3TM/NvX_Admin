@@ -91,3 +91,212 @@ RegisterCommand('NvX_Admin_NoClipV2', function(source, args)
         TriggerClientEvent('esx:showNotification', source, Config.LanguageSyS["NotHavePermission"])
     end
 end)
+
+-- {Get List Of Players} -- 
+NvX_sPairs = function(t, order)
+    local keys = {}
+
+    for k in pairs(t) do 
+        keys[#keys + 1] = k 
+    end
+
+    if order then 
+        table.sort(keys, function(a, b) 
+            return order(t, a, b)
+        end)
+    else
+        table.sort(keys)
+    end
+
+    local i = 0 
+
+    return function() 
+        i = i + 1
+
+        if keys[i] then 
+            return keys[i], t[keys[i]]
+        end
+    end
+end
+
+ESX.RegisterServerCallback('NvX_Admin:GetPlayersList', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source)
+
+    if xPlayer then 
+        local elements = {}
+
+        for k, v in NvX_sPairs(GetPlayers()) do 
+            local name = GetPlayerName(v)
+
+            if name ~= nil then 
+                table.insert(elements, {label = "Name: "..name.." ID: "..v, value = v})
+            end
+        end
+
+        cb(elements)
+    end
+end)
+
+-- {Command For Check Player} --
+RegisterCommand('NvX_Admin_CheckPlayer', function(source, args)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local GroupPlayer = xPlayer.getGroup()
+
+    if GroupPlayer ~= nil and (GroupPlayer == 'owner' or GroupPlayer == 'admin' or GroupPlayer == 'mod' or GroupPlayer == 'helper') then
+        local playerId = args[1]
+        local NamePlayer = GetPlayerName(playerId)
+        local Check = 'Name: '..NamePlayer..'\nHealth: '..GetEntityHealth(GetPlayerPed(playerId)..'/'..GetEntityMaxHealth(GetPlayerPed(playerId))..'\nArmor: '..GetPLayerArmour(GetPlayerPed(playerId)..'/'..GetPlayerMaxArmour(playerId))) 
+    
+        TriggerClientEvent('esx:showNotification', source, ''..Check..'')
+    else
+        TriggerClientEvent('esx:showNotification', source, Config.LanguageSyS.NotHavePermission)
+    end
+end)
+
+-- {Command For Screenshot Player} --
+RegisterCommand('NvX_Admin_ScreenshotPlayer', function(source, args)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local GroupPlayer = xPlayer.getGroup()
+
+    if GroupPlayer ~= nil and (GroupPlayer == 'owner' or GroupPlayer == 'admin' or GroupPlayer == 'mod' or GroupPlayer == 'helper') then
+        local ID = tonumber(args[1])
+
+        TriggerEvent('NvX_Admin:GetIdentifiers', source, ID)
+
+        TriggerClientEvent('NvX_Admin:TakeScreen', ID)
+
+        TriggerClientEvent('esx:showNotification', source, Config.LanguageSyS.AdministrationSection.SubMenuListPlayerManage_ScreenshotDone)
+    else
+        TriggerClientEvent('esx:showNotification', source, Config.LanguageSyS.NotHavePermission)
+    end
+end)
+
+RegisterServerEvent('NvX_Admin:GetIdentifiers')
+AddEventHandler('NvX_Admin:GetIdentifiers', function(source, ID)
+    if Config_Logs.Screenshot == nil or Config_Logs.Screenshot == '' then 
+        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
+        print("^7[^3NvX_Admin^7 - ^1Server Side^7] Webhook Missing In Config_Logs (Screenshot), Set Webhook For Screenshot Work Correctly")
+        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
+    else
+        local src = source 
+
+        -- Staff Details 
+        local s_steam = 'N/A'
+        local s_discord = 'N/A'
+        local s_license = 'N/A'
+        local s_live = 'N/A'
+        local s_xbl = 'N/A'
+        local s_ip = 'N/A'
+        local s_name = GetPlayerName(src)
+
+        for m, n in ipairs(GetPlayerIdentifiers(src)) do 
+            if n:match("steam") then
+                s_steam = n
+        
+            elseif n:match("discord") then
+                s_discord = n:gsub("discord:","")
+        
+            elseif n:match("license") then 
+                s_license = n
+        
+            elseif n:match("live") then
+                s_live = n
+        
+            elseif n:match("xbl") then 
+                s_xbl = n 
+        
+            elseif n:match("ip") then
+                s_ip = n:gsub("ip:","")
+            end
+        end
+
+        -- Player Details
+        local p_steam = 'N/A'
+        local p_discord = 'N/A'
+        local p_license = 'N/A'
+        local p_live = 'N/A'
+        local p_xbl = 'N/A'
+        local p_ip = 'N/A'
+        local p_name = GetPlayerName(ID)
+
+        for m, n in ipairs(GetPlayerIdentifiers(src)) do 
+            if n:match("steam") then
+                p_steam = n
+        
+            elseif n:match("discord") then
+                p_discord = n:gsub("discord:","")
+        
+            elseif n:match("license") then 
+                p_license = n
+        
+            elseif n:match("live") then
+                p_live = n
+        
+            elseif n:match("xbl") then 
+                p_xbl = n 
+        
+            elseif n:match("ip") then
+                p_ip = n:gsub("ip:","")
+            end
+        end
+
+        PerformHttpRequest(Config_Logs.Screenshot, function() 
+        end, "POST", json.encode({
+            embeds = {{
+                author = {
+                    name = "NvX_Admin - Screenshot Requested", 
+                    icon_url = "https://imgur.com/cHP8iwN.png",
+                }, 
+
+                title = "NvX_Admin - Admin Menù",
+                description = "**[Staffer Details]** \n**``ID Staffer:``**`` "..src.." ``\n**``Name Staffer:``**`` "..s_name.." ``\n**``Steam Hex:``**`` "..s_steam.." ``\n**``License:``**`` "..s_license.." ``\n**``Discord ID:``**``"..s_discord.." ``\n**``Live:``**``"..s_live.." ``\n**``Xbox ID:``**``"..s_xbl.." ``\n**``IP:``**``"..s_ip.." ``\n\n**[Player Details]** \n**``ID Player:``**`` "..ID.." ``\n**``Name Player:``**`` "..p_name.." ``\n**``Steam Hex:``**`` "..p_steam.." ``\n**``License:``**`` "..p_license.." ``\n**``Discord ID:``**`` "..p_discord.." ``\n**``Live ID:``**`` "..p_live.." ``\n**``Xbox ID:``**`` "..p_xbl.." ``\n**``IP:``**`` "..p_ip.."`` \n\n**The Staffer** ``**"..s_name.."**`` Has Requested Screenshot Of Player ``**"..p_name.."**``", 
+                color = 179870,
+                image = {
+                    url = image
+                },
+                footer = {
+                    text = 'NvX_Admin - Admin Menù Of Novix Development',
+                    icon_url = "https://imgur.com/cHP8iwN.png",
+                }
+            }}
+        }), {
+            ["Content-Type"] = "application/json"
+        })
+    end
+end)
+
+RegisterServerEvent('NvX_Admin:Screenshot')
+AddEventHandler('NvX_Admin:Screenshot', function(upload)
+    NvX_LogDiscord(upload)
+end)
+
+function NvX_LogDiscord(image)
+    if Config_Logs.Screenshot == nil or Config_Logs.Screenshot == '' then 
+        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
+        print("^7[^3NvX_Admin^7 - ^1Server Side^7] Webhook Missing In Config_Logs (Screenshot), Set Webhook For Screenshot Work Correctly")
+        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
+    else
+        PerformHttpRequest(Config_Logs.Screenshot, function()
+        end, "POST", json.encode({
+            embeds = {{
+                author = {
+                    name = "",
+                    icon_url = "https://imgur.com/cHP8iwN.png",
+                },
+
+                title = "**``Screenshot Requested``**",
+                description = "",
+                color = 179870,
+                image = {
+                    url = image
+                },
+                footer = {
+                    text = 'NvX_Admin - Admin Menù Of Novix Development',
+                    icon_url = "https://imgur.com/cHP8iwN.png",
+                }
+            }}
+        }), {
+            ["Content-Type"] = "application/json"
+        })
+    end
+end

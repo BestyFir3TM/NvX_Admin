@@ -6,7 +6,7 @@ Author 'BestyFir3TM - Novix Development'
 Description 'Admin Menu For Server FiveM [AIO]'
 
 server_scripts {
-    'Config/Config.Logs.lua',
+    'Config/Config_Logs.lua',
     'Config/Config.lua',
     'Server/*.lua'
 }
