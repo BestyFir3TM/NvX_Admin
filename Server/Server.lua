@@ -173,96 +173,87 @@ end)
 
 RegisterServerEvent('NvX_Admin:GetIdentifiers')
 AddEventHandler('NvX_Admin:GetIdentifiers', function(source, ID)
-    if Config_Logs.Screenshot == nil or Config_Logs.Screenshot == '' then 
-        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
-        print("^7[^3NvX_Admin^7 - ^1Server Side^7] Webhook Missing In Config_Logs (Screenshot), Set Webhook For Screenshot Work Correctly")
-        print('^3~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^7')
-    else
-        local src = source 
+    local src = source 
 
-        -- Staff Details 
-        local s_steam = 'N/A'
-        local s_discord = 'N/A'
-        local s_license = 'N/A'
-        local s_live = 'N/A'
-        local s_xbl = 'N/A'
-        local s_ip = 'N/A'
-        local s_name = GetPlayerName(src)
+    -- Staff Details 
+    local s_steam = 'N/A'
+    local s_discord = 'N/A'
+    local s_license = 'N/A'
+    local s_live = 'N/A'
+    local s_xbl = 'N/A'
+    local s_ip = 'N/A'
+    local s_name = GetPlayerName(src)
 
-        for m, n in ipairs(GetPlayerIdentifiers(src)) do 
-            if n:match("steam") then
-                s_steam = n
-        
-            elseif n:match("discord") then
-                s_discord = n:gsub("discord:","")
-        
-            elseif n:match("license") then 
-                s_license = n
-        
-            elseif n:match("live") then
-                s_live = n
-        
-            elseif n:match("xbl") then 
-                s_xbl = n 
-        
-            elseif n:match("ip") then
-                s_ip = n:gsub("ip:","")
-            end
+    for m, n in ipairs(GetPlayerIdentifiers(src)) do 
+        if n:match("steam") then
+            s_steam = n
+    
+        elseif n:match("discord") then
+            s_discord = n:gsub("discord:","")
+    
+        elseif n:match("license") then 
+            s_license = n
+    
+        elseif n:match("live") then
+            s_live = n
+    
+        elseif n:match("xbl") then 
+            s_xbl = n 
+    
+        elseif n:match("ip") then
+            s_ip = n:gsub("ip:","")
         end
-
-        -- Player Details
-        local p_steam = 'N/A'
-        local p_discord = 'N/A'
-        local p_license = 'N/A'
-        local p_live = 'N/A'
-        local p_xbl = 'N/A'
-        local p_ip = 'N/A'
-        local p_name = GetPlayerName(ID)
-
-        for m, n in ipairs(GetPlayerIdentifiers(src)) do 
-            if n:match("steam") then
-                p_steam = n
-        
-            elseif n:match("discord") then
-                p_discord = n:gsub("discord:","")
-        
-            elseif n:match("license") then 
-                p_license = n
-        
-            elseif n:match("live") then
-                p_live = n
-        
-            elseif n:match("xbl") then 
-                p_xbl = n 
-        
-            elseif n:match("ip") then
-                p_ip = n:gsub("ip:","")
-            end
-        end
-
-        PerformHttpRequest(Config_Logs.Screenshot, function() 
-        end, "POST", json.encode({
-            embeds = {{
-                author = {
-                    name = "NvX_Admin - Screenshot Requested", 
-                    icon_url = "https://imgur.com/cHP8iwN.png",
-                }, 
-
-                title = "NvX_Admin - Admin Menù",
-                description = "**[Staffer Details]** \n**``ID Staffer:``**`` "..src.." ``\n**``Name Staffer:``**`` "..s_name.." ``\n**``Steam Hex:``**`` "..s_steam.." ``\n**``License:``**`` "..s_license.." ``\n**``Discord ID:``**``"..s_discord.." ``\n**``Live:``**``"..s_live.." ``\n**``Xbox ID:``**``"..s_xbl.." ``\n**``IP:``**``"..s_ip.." ``\n\n**[Player Details]** \n**``ID Player:``**`` "..ID.." ``\n**``Name Player:``**`` "..p_name.." ``\n**``Steam Hex:``**`` "..p_steam.." ``\n**``License:``**`` "..p_license.." ``\n**``Discord ID:``**`` "..p_discord.." ``\n**``Live ID:``**`` "..p_live.." ``\n**``Xbox ID:``**`` "..p_xbl.." ``\n**``IP:``**`` "..p_ip.."`` \n\n**The Staffer** ``**"..s_name.."**`` Has Requested Screenshot Of Player ``**"..p_name.."**``", 
-                color = 179870,
-                image = {
-                    url = image
-                },
-                footer = {
-                    text = 'NvX_Admin - Admin Menù Of Novix Development',
-                    icon_url = "https://imgur.com/cHP8iwN.png",
-                }
-            }}
-        }), {
-            ["Content-Type"] = "application/json"
-        })
     end
+
+    -- Player Details
+    local p_steam = 'N/A'
+    local p_discord = 'N/A'
+    local p_license = 'N/A'
+    local p_live = 'N/A'
+    local p_xbl = 'N/A'
+    local p_ip = 'N/A'
+    local p_name = GetPlayerName(ID)
+
+    for m, n in ipairs(GetPlayerIdentifiers(src)) do 
+        if n:match("steam") then
+            p_steam = n
+    
+        elseif n:match("discord") then
+            p_discord = n:gsub("discord:","")
+    
+        elseif n:match("license") then 
+            p_license = n
+    
+        elseif n:match("live") then
+            p_live = n
+    
+        elseif n:match("xbl") then 
+            p_xbl = n 
+    
+        elseif n:match("ip") then
+            p_ip = n:gsub("ip:","")
+        end
+    end
+
+    PerformHttpRequest(Config_Logs.Screenshot, function() 
+    end, "POST", json.encode({
+        embeds = {{
+            author = {
+                name = "NvX_Admin - Screenshot Requested", 
+                icon_url = "https://imgur.com/cHP8iwN.png",
+            }, 
+
+            title = "NvX_Admin - Admin Menù",
+            description = "**[Staffer Details]** \n**``ID Staffer:``**`` "..src.." ``\n**``Name Staffer:``**`` "..s_name.." ``\n**``Steam Hex:``**`` "..s_steam.." ``\n**``License:``**`` "..s_license.." ``\n**``Discord ID:``**``"..s_discord.." ``\n**``Live:``**``"..s_live.." ``\n**``Xbox ID:``**``"..s_xbl.." ``\n**``IP:``**``"..s_ip.." ``\n\n**[Player Details]** \n**``ID Player:``**`` "..ID.." ``\n**``Name Player:``**`` "..p_name.." ``\n**``Steam Hex:``**`` "..p_steam.." ``\n**``License:``**`` "..p_license.." ``\n**``Discord ID:``**`` "..p_discord.." ``\n**``Live ID:``**`` "..p_live.." ``\n**``Xbox ID:``**`` "..p_xbl.." ``\n**``IP:``**`` "..p_ip.."`` \n\n**The Staffer** ``"..s_name.."`` \nHas Requested Screenshot Of Player ``"..p_name.."``", 
+            color = 179870,
+            footer = {
+                text = 'NvX_Admin - Admin Menù Of Novix Development',
+                icon_url = "https://imgur.com/cHP8iwN.png",
+            }
+        }}
+    }), {
+        ["Content-Type"] = "application/json"
+    })
 end)
 
 RegisterServerEvent('NvX_Admin:Screenshot')
